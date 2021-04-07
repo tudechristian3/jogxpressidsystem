@@ -9,11 +9,11 @@
 
     <div class="logo">
         <a href="http://www.creative-tim.com/" class="simple-text logo-mini">
-            CT
+            JXP
         </a>
 
         <a href="http://www.creative-tim.com/" class="simple-text logo-normal">
-          Creative Tim
+          Jogxpress
         </a>
         
         <div class="navbar-minimize">

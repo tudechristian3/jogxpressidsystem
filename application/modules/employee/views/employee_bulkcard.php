@@ -10,12 +10,12 @@
 </head>
 <body>
     <?php foreach($employees as $u): ?>
-        <input type="hidden" class="form-control" name="employee_id" value="<?php echo $u['employee_id']; ?>">
             <div class="container">
                 <div class="padding">
                     <div class="font">
                         <div class="top">
-                        <img src="<?php echo base_url('upload')?>/<?php echo $u['employee_date_uploaded']?>/<?php echo $u['employee_image']?>">
+                            <!-- <img src="<?php echo base_url()?>/download.png"> -->
+                            <img src="<?php echo base_url('upload')?>/<?php echo $u['employee_date_uploaded']?>/<?php echo $u['employee_image']?>">
                         </div>
                         <div class="bottom">
                             <p><?php echo $u['employee_name']?></p>

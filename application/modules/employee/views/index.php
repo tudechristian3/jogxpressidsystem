@@ -9,6 +9,9 @@
                         <div>
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addEmployee"><i class="fa fa-plus-circle"></i> Create New</button>
                         </div>
+                        <div>
+                            <a href="<?php echo base_url('employee/bulk_card')?>" type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Generate ID</a>
+                        </div>
                     </div>
                     <div class="card-body">
 
@@ -23,6 +26,7 @@
                                     <th>Address</th>
                                     <th>Position</th>
                                     <th>Contact Number</th>
+                                    <th>Image</th>
                                     <th class="disabled-sorting text-right">Actions</th>
                                 </tr>
                             </thead>
@@ -34,6 +38,7 @@
                                     <th>Address</th>
                                     <th>Position</th>
                                     <th>Contact Number</th>
+                                    <th>Image</th>
                                     <th class="disabled-sorting text-right">Actions</th>
                                 </tr>
                             </tfoot>
@@ -51,13 +56,19 @@
 <div id="addEmployee" class="modal" tabindex="-1" role="dialog" aria-labelledby="vcenter" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered animated bounceIn">
                     <div class="modal-content">
-                        <form method="post" novalidate>
+                    <form id="addForm" method="post" enctype="multipart/form-data" novalidate>
                             <input type="hidden" class="form-control" name="employee_id" value="">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="vcenter">Add Employee</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
+                                <div class="picture-container">
+                                        <div class="picture">
+                                            <input type="file" name="imagefile">
+                                        </div>
+                                </div>
+
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <p class="m-0">Name</p>
@@ -161,3 +172,5 @@
                     </div>
                 </div>
             </div>
+
+            

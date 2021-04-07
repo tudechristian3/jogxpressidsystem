@@ -2,7 +2,7 @@ $(document).ready(function(){
     var base_url = $('.base_url').val();
 
     var table_user = $("#datatable").DataTable({
-        "processing": true,
+        "processing": false,
         "serverSide": true,
         "order": [[0,'desc']],
         "columns":[
@@ -12,6 +12,12 @@ $(document).ready(function(){
              {"data":"employee_birthdate"},
              {"data":"employee_position"},
              {"data":"employee_contact_number"},
+             {"data": "employee_image","render":function(data, type, row, meta){
+                var str = '';
+                str += '<img src="'+base_url+'upload/'+row.employee_date_uploaded+'/'+row.employee_image+'" height="50" width="50">';
+                return str;
+                }
+             },   
              {"data": "employee_id","render":function(data, type, row, meta){
                        var str = '';
                     //    str += '<div class="btn-group">';
@@ -41,7 +47,10 @@ $(document).ready(function(){
 
               },
          ],
-   }).ajax.reload();
+         
+   });
+
+   
 
    $(document).on('click','.delete_employee_action',function(e){
         e.preventDefault();
@@ -78,6 +87,7 @@ $(document).ready(function(){
                             stack: 6
                         })
                         ajax.reload();
+                        
                     }
                 })
             }
@@ -183,29 +193,61 @@ $(document).ready(function(){
         })
 
         //Add Employee
-        $('#addEmployee form').on('submit', function(e){
+        // $('#addEmployee form').on('submit', function(e){
+        //     e.preventDefault();
+        //     const self = $(this);
+        //     //var user_id = $('.user_id').val();
+        //     $.ajax({
+        //         url: base_url+'employee/insert',
+        //         type: 'POST',
+        //         dataType: 'json',
+        //         data: self.serialize(),
+        //         success: function(res){
+        //             Swal.fire({
+        //                 title: "Saved",
+        //                 text: "Successfully Update",
+        //                 type: "success",
+        //                 //showCancelButton: true,
+        //                 confirmButtonColor: "#1A6519",
+        //                 confirmButtonText: "Yes",
+        //               });
+        //               $('#addEmployee').modal('hide');
+        //               setInterval( function () {
+        //                          table_user.ajax.reload();
+        //                   }, 3000 );
+        //               //table_user.ajax.reload();
+        //         }
+        //     })
+        // })
+
+        //Add Employee with Image
+        $(document).on('submit', '#addForm' , function(e){
             e.preventDefault();
+            //console.log(e);
+            let formdata = new FormData($('#addForm')[0]);
+           
             const self = $(this);
-            //var user_id = $('.user_id').val();
             $.ajax({
                 url: base_url+'employee/insert',
                 type: 'POST',
                 dataType: 'json',
-                data: self.serialize(),
+                contentType: false,
+                processData: false,
+                data: formdata,
                 success: function(res){
                     Swal.fire({
                         title: "Saved",
-                        text: "Successfully Update",
+                        text: "Successfully Added",
                         type: "success",
                         //showCancelButton: true,
                         confirmButtonColor: "#1A6519",
                         confirmButtonText: "Yes",
                       });
-                      $('#addUser').modal('hide');
+                      $('#addEmployee').modal('hide');
                       table_user.ajax.reload();
                 }
-            })
-        })
+            });
+        });
 
 
         $(document).on('click','.employee_generate_id',function(e){
@@ -219,10 +261,14 @@ $(document).ready(function(){
                 data: formdata,
                 success: function(res){
                     console.log(res);
-                    //window.open(base_url+'upload/test.pdf');
-                    window.location.href = 'employee/generate_id/'+id;
+                    window.open(base_url+'employee/generate_id/'+id);
+                    //window.location.href = 'employee/generate_id/'+id;
                 }
             }) 
            
         });
+
+        setInterval( function () {
+            table_user.ajax.reload();
+        }, 3000 );
 });

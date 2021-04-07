@@ -15,7 +15,7 @@
             $search = $this->input->post('search');
             $order = $this->input->post('order');
             $draw = $this->input->post('draw');
-            $column_order = array('employee_id','employee_name','employee_address','employee_birthdate','employee_position','employee_contact_number');
+            $column_order = array('employee_id','employee_name','employee_address','employee_birthdate','employee_position','employee_contact_number','employee_image');
             $join = array();
             $select = "*";
             $where = array("employee_active <>" => 0);
@@ -31,22 +31,51 @@
         }
 
         public function insert(){
+            $dateUploaded = date('Y-m-d');
+
             $employee_name = $this->input->post('employee_name');
             $employee_address = $this->input->post('employee_address');
             $employee_birthdate = $this->input->post('employee_birthdate');
             $employee_position = $this->input->post('employee_position');
             $employee_contact_number = $this->input->post('employee_contact_number');
 
-            $add = array(
-                'employee_name' => $employee_name,
-                'employee_address' => $employee_address,
-                'employee_birthdate' => $employee_birthdate,
-                'employee_position' => $employee_position,
-                'employee_contact_number' => $employee_contact_number
-            );
+            if(!is_dir('./upload/'. $dateUploaded)){
+                mkdir('./upload/'. $dateUploaded);
+    
+            }
 
-            $insert = $this->MY_Model->insert('jogxpress_employee', $add);
-            echo json_encode($insert);
+            $config['upload_path']          = './upload/'.$dateUploaded;
+            $config['allowed_types']        = '*';
+            $config['max_size']             = 1000000000;
+            $config['max_width']            = 1000000000;
+            $config['max_height']           = 1000000000;
+    
+    
+            $this->load->library('upload', $config);
+    
+            if ( ! $this->upload->do_upload('imagefile'))
+            {
+                    $error = array('error' => $this->upload->display_errors());
+    
+                    //$this->load->view('upload_form', $error);
+            }
+            else{
+
+                $add = array(
+                    'employee_name' => $employee_name,
+                    'employee_address' => $employee_address,
+                    'employee_birthdate' => $employee_birthdate,
+                    'employee_position' => $employee_position,
+                    'employee_contact_number' => $employee_contact_number,
+                    'employee_date_uploaded' => $dateUploaded,
+                    'employee_image' => $this->upload->data('file_name')
+                );
+    
+                $insert = $this->MY_Model->insert('jogxpress_employee', $add);
+                echo json_encode($insert);
+            }
+
+            
         }
 
         public function edit_employee(){
@@ -90,9 +119,17 @@
             );
 
             $data['employees'] = $this->MY_Model->getRows('jogxpress_employee', $params);
-            $card = $this->load->view('employee/generate', $data, TRUE);
-            $this->pdf->createPDF($card, 'ID', false);
+            //redirect(base_url('employee/generate'));
+            $this->load->view('employee/generate', $data);
+            //$this->pdf->createPDF($card, 'ID', true);
+            
+            //exit(0);
            
+        }
+
+        public function bulk_card(){
+            $data['employees'] = $this->MY_Model->getRows('jogxpress_employee');
+            $this->load->view('employee/employee_bulkcard', $data);
         }
 
         // public function card(){

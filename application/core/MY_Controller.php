@@ -27,6 +27,13 @@ class MY_Controller extends MX_Controller {
       	$this->load->view($page,$data);
       	$this->load->view('includes/footer',$data);
     }
+
+	public function load_card($page, $data = array()){
+		$data['users'] = $this->MY_Model->getRows('jogxpress_user');
+      	$this->load->view('includes/header_card',$data);
+      	$this->load->view($page,$data);
+      	$this->load->view('includes/footer_card',$data);
+    }
 	// public function load_certificate($page, $data = array()){
 	// 	$data['users'] = $this->MY_Model->getRows('hmvc_users');
     //   	$this->load->view('includes/head',$data);
