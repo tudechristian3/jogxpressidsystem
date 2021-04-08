@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo base_url()?>/idCard.css">
+    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
     <title>ID Card</title>
 <!--     
     So lets start -->
 </head>
-<body>
+<button onClick="generatePDF()">Generate ID</button>
+<body id="content"><br/>
     <?php foreach($employees as $u): ?>
             <div class="container">
                 <div class="padding">
@@ -44,5 +46,18 @@
                 </div>
             </div>
     <?php endforeach; ?>
+    <script>
+        function generatePDF(){
+            const element = document.getElementById("content");
+
+            var opt = {
+                html2canvas: {
+                    scale: 1.5
+                },
+                jsPDF: { unit: 'pt', format: 'dl', orientation: 'portrait' }
+            };
+            var worker = html2pdf().set(opt).from(element).save();
+        }
+    </script>
 </body>
 </html>

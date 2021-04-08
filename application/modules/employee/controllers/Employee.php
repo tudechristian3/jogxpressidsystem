@@ -121,9 +121,12 @@
             $data['employees'] = $this->MY_Model->getRows('jogxpress_employee', $params);
             //redirect(base_url('employee/generate'));
             $this->load->view('employee/generate', $data);
+            //$html = $this->output->get_output();
+        		// Load pdf library
+           
+            //$this->pdf->createPDF($card.$card);
             //$this->pdf->createPDF($card, 'ID', true);
-            
-            //exit(0);
+        
            
         }
 

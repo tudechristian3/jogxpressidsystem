@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo base_url()?>/idCard.css">
+    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
     <title>ID Card</title>
 <!--     
     So lets start -->
 </head>
-<body>
+<button onClick="generatePDF()">Generate ID</button>
+<body id="generate_employee_id">
+                
     <?php foreach($employees as $u): ?>
         <input type="hidden" class="form-control" name="employee_id" value="<?php echo $u['employee_id']; ?>">
             <div class="container">
@@ -39,10 +42,19 @@
                         <p><?php echo $u['employee_contact_number']?></p>  
                         <div class="logo">
                         <img src="<?php echo base_url('assets')?>/img/jogxpresslogo.png">
+                        
                     </div>
                     </div>
                 </div>
             </div>
+           
     <?php endforeach; ?>
+    <script>
+        function generatePDF(){
+            const element = document.getElementById("generate_employee_id");
+
+            html2pdf().from(element).save();
+        }
+    </script>
 </body>
 </html>
